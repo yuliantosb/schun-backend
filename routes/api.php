@@ -13,8 +13,21 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware(['auth:api'])->group(function(){
+    // Route Untuk Items
+    Route::get('items', 'Api\ItemController@index');
+
+    // Route Untuk Batching Plan
+    Route::get('batchings', 'Api\BatchingController@index');
+
+    // Route Untuk Customer
+    Route::get('customers', 'Api\CustomerController@index');
+
+    // Route Untuk StockIn
+    Route::get('stock-in', 'Api\StockinController@index');
+
+    // Route Untuk Stock Out
+    Route::get('stock-out', 'Api\StockoutController@index');
 });
 
 Route::post('login', 'Api\Auth\LoginController@login');
