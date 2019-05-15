@@ -11,7 +11,7 @@ class StockinController extends Controller
     // Function Untuk Menampilkan Data StockIn
     public function index()
     {
-        $stockins = Stockin::get();
+        $stockins = Stockin::with(['Items', 'Items.Uom'])->get();
         return response()->json([
             'type' => 'success',
             'message' => 'fetch Data Stock In Success',
