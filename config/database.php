@@ -92,6 +92,7 @@ return [
             'database' => env('DB_DATABASE'),
             'username' => env('DB_USERNAME'),
             'password' => env('DB_PASSWORD'),
+            // 'dsn'      => 'mongodb+srv://admin:13-Juli-1995@schun-rjwgr.mongodb.net/waskita?retryWrites=true',
             'options'  => [
                 'database' => 'admin' // sets the authentication database required by mongo 3
             ]

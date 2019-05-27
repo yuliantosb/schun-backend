@@ -1,6 +1,7 @@
 <?php
 
 use App\User;
+use App\Role;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 use Illuminate\Support\Facades\Hash;
@@ -23,6 +24,7 @@ $factory->define(User::class, function (Faker $faker) {
         'email_verified_at' => now(),
         'password' => Hash::make('secret'),
         'remember_token' => Str::random(10),
-        'api_token' => Str::random(60)
+        'api_token' => Str::random(60),
+        'role_id' => Role::first()->id
     ];
 });
