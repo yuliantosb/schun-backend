@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Role;
+use App\Helpers\Pages;
+use App\Helpers\Common;
+use App\Permission;
 
 class RoleController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $roles = Stockin::where(function($where) use ($request){
+        $roles = Role::where(function($where) use ($request){
 
                                 if (!empty($request->keyword)) {
                                     $where->where('name', 'like', '%'.$request->keyword.'%')
@@ -37,5 +40,35 @@ class RoleController extends Controller
                 'data' => $roles->all()
             ]
         ]);
+    }
+
+    public function getPermissions()
+    {
+        $permissions = Permission::with('children')->doesntHave('parent')->get();
+        return response()->json([
+            'type' => 'success',
+            'data' => $permissions
+        ], 200);
+    }
+
+    public function store(Request $request)
+    {
+        $role = new Role;
+        $role->name = $request->name;
+        $role->slug = Common::createSlug($request->name, 'role');
+        $role->description = $request->description;
+        $role->save();
+
+        $permission = new Permission;
+        foreach ($request->permissions as $perm => $value) {
+            $permission->{$perm} = $value;
+        }
+        $role->permissions()->save($permission);
+
+
+        return response()->json([
+            'type' => 'success',
+            'message' => 'Role saved successfully'
+        ], 201);
     }
 }

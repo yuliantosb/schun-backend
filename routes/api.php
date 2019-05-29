@@ -16,6 +16,15 @@ use Illuminate\Http\Request;
 Route::middleware(['auth:api'])->group(function(){
     // Role
     Route::get('role', 'Api\RoleController@index');
+    Route::get('role/permissions', 'Api\RoleController@getPermissions');
+    Route::post('role', 'Api\RoleController@store');
+    // Permission
+    Route::get('permission', 'Api\PermissionController@index');
+    Route::get('permission/parent', 'Api\PermissionController@getParent');
+    Route::post('permission', 'Api\PermissionController@store');
+    Route::get('permission/{id}', 'Api\PermissionController@show');
+    Route::put('permission/{id}', 'Api\PermissionController@update');
+    Route::delete('permission/{id}', 'Api\PermissionController@destroy');
     // Logout
     Route::post('logout', 'Api\Auth\LoginController@logout');
 });

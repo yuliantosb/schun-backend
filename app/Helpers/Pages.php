@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Helpers\Pages;
+namespace App\Helpers;
 
 class Pages {
-    public function generate($data)
+
+    public static function generate($data) : array
     {
         $pages = [];
 
