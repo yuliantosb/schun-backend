@@ -298,11 +298,7 @@
       'mongodb' => 
       array (
         'driver' => 'mongodb',
-        'host' => 'localhost',
-        'port' => '27017',
-        'database' => 'waskita',
-        'username' => '',
-        'password' => '',
+        'dsn' => 'mongodb+srv://admin:13-Juli-1995@schun-rjwgr.mongodb.net/waskita?retryWrites=true',
         'options' => 
         array (
           'database' => 'admin',
