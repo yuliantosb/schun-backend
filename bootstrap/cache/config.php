@@ -86,7 +86,7 @@
   array (
     'defaults' => 
     array (
-      'guard' => 'api',
+      'guard' => 'web',
       'passwords' => 'users',
     ),
     'guards' => 
@@ -298,6 +298,7 @@
       'mongodb' => 
       array (
         'driver' => 'mongodb',
+        'database' => 'waskita',
         'dsn' => 'mongodb+srv://admin:13-Juli-1995@schun-rjwgr.mongodb.net/waskita?retryWrites=true',
         'options' => 
         array (
