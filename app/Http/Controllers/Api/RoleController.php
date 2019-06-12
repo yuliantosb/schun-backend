@@ -23,6 +23,7 @@ class RoleController extends Controller
                             })
                             ->orderBy('name')
                             ->paginate((int)$request->perpage);
+    
 
         $pages = Pages::generate($roles);
 
@@ -57,18 +58,55 @@ class RoleController extends Controller
         $role->name = $request->name;
         $role->slug = Common::createSlug($request->name, 'role');
         $role->description = $request->description;
+        $role->permissions = $request->permissions;
         $role->save();
 
-        $permission = new Permission;
-        foreach ($request->permissions as $perm => $value) {
-            $permission->{$perm} = $value;
-        }
-        $role->permissions()->save($permission);
+        // $permission = new Permission;
+        // foreach ($request->permissions as $perm => $value) {
+        //     $permission->{$perm} = $value;
+        // }
+        // $role->permissions()->save($permission);
 
 
         return response()->json([
             'type' => 'success',
             'message' => 'Role saved successfully'
         ], 201);
+    }
+
+    public function show($id)
+    {
+        $role = Role::find($id);
+        return response()->json([
+            'type' => 'success',
+            'data' => $role
+        ], 200);
+    }
+
+    public function update($id, Request $request)
+    {
+        $role = Role::find($id);
+        $role->name = $request->name;
+        $role->slug = Common::createSlug($request->name, 'role', $id);
+        $role->description = $request->description;
+        $role->permissions = $request->permissions;
+        $role->save();
+
+        return response()->json([
+            'type' => 'success',
+            'message' => 'Role updated successfully'
+        ], 201);
+    }
+
+    public function destroy($id)
+    {
+        $role = Role::find($id);
+        $role->delete();
+
+        return response()->json([
+            'type' => 'success',
+            'message' => 'role deleted successfully'
+        ], 201);
+
     }
 }

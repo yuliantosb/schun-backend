@@ -12,12 +12,6 @@ class Role extends Model
         'name', 'slug',
     ];
 
-    protected $casts = [
-        'permissions' => 'array',
-    ];
-
-    protected $hidden = ['permissions'];
-
     public function users()
     {
         return $this->hasOne('App\User');

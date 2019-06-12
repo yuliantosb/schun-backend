@@ -65,4 +65,9 @@ class User extends Eloquent
     {
         return $this->role()->where('slug', $roleSlug)->count() == 1;
     }
+
+    public function employee()
+    {
+        return $this->hasOne('App\Employee');
+    }
 }

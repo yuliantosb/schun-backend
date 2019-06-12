@@ -18,7 +18,10 @@ Route::middleware(['auth:api'])->group(function(){
     // Role
     Route::get('role', 'Api\RoleController@index');
     Route::get('role/permissions', 'Api\RoleController@getPermissions');
+    Route::get('role/{id}', 'Api\RoleController@show');
+    Route::put('role/{id}', 'Api\RoleController@update');
     Route::post('role', 'Api\RoleController@store');
+    Route::delete('role/{id}', 'Api\RoleController@destroy');
     // Permission
     Route::get('permission', 'Api\PermissionController@index');
     Route::get('permission/parent', 'Api\PermissionController@getParent');
@@ -37,6 +40,7 @@ Route::middleware(['auth:api'])->group(function(){
      //Employee
      Route::get('employee', 'Api\EmployeeController@index');
      Route::post('employee', 'Api\EmployeeController@store');
+     Route::get('employee/role', 'Api\EmployeeController@role');
      Route::get('employee/{id}', 'Api\EmployeeController@show');
      Route::put('employee/{id}', 'Api\EmployeeController@update');
      Route::delete('employee/{id}', 'Api\EmployeeController@destroy');
