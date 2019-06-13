@@ -6,23 +6,33 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Expense;
 use App\Helpers\Pages;
+use App\User;
+use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 class ExpenseController extends Controller
 {
     public function index(Request $request)
     {
-        $expense = Expense::where(function($where) use ($request){
+        $expense = Expense::with('user')->where(function($where) use ($request){
 
-                                if (!empty($request->keyword)) {
-                                    $where->where('reference', 'like', '%'.$request->keyword.'%')
-                                        ->orWhere('amount', 'like', '%'.$request->keyword.'%')
-                                        ->orWhere('note', 'like', '%'.$request->keyword.'%')
-                                        ->orWhere('incharge', 'like', '%'.$request->keyword.'%')
-                                        ->orWhere('evidence', 'like', '%'.$request->keyword.'%');
-                                }
-                            })
-                            ->orderBy('reference')
-                            ->paginate((int)$request->perpage);
+                if (!empty($request->start_date) && !empty($request->end_date)) {
+                    $where->where('created_at', '>=', Carbon::parse($request->start_date))
+                           ->where('created_at', '<=', Carbon::parse($request->end_date)->addDay());
+                }
+
+                if (!empty($request->keyword)) {
+                    $where->orWhere('reference', 'like', '%'.$request->keyword.'%')
+                        ->orWhere('amount', 'like', '%'.$request->keyword.'%')
+                        ->orWhere('notes', 'like', '%'.$request->keyword.'%')
+                        ->orWhereHas('user', function($whereHas) use ($request) {
+                            $whereHas->where('name', 'like', '%'.$request->keyword.'%');
+                        })
+                        ->orWhere('evidence', 'like', '%'.$request->keyword.'%');
+                }
+            })
+        ->orderBy('reference')
+        ->paginate((int)$request->perpage);
 
         $pages = Pages::generate($expense);
 
@@ -44,12 +54,34 @@ class ExpenseController extends Controller
 
     public function store(Request $request)
     {
+
+        $request->validate([
+            'reference' => 'required',
+            'user_id' => 'required'
+        ]);
+
         $expense = new Expense;
         $expense->reference = $request->reference;
-        $expense->amount = $request->amount;
-        $expense->note = $request->note;
-        $expense->incharge = $request->incharge;
-        $expense->evidence = $request->evidence;
+        $expense->amount = str_replace(',', '', $request->amount);
+        $expense->notes = $request->notes;
+        $expense->user_id = $request->user_id;
+
+        if ($request->has('file')) {
+
+            if (Storage::disk('public')->exists($request->evidence)) {
+                Storage::disk('public')->delete($request->evidence);
+            }
+
+            if (preg_match('/^data:image\/(\w+);base64,/', $request->file)) {
+                
+                $img = substr($request->file, strpos($request->file, ',') + 1);
+                $img = base64_decode($img);
+                Storage::disk('public')->put($request->evidence, $img);
+            }
+
+            $expense->evidence = $request->evidence;
+        }
+
         $expense->save();
 
         return response()->json([
@@ -60,7 +92,7 @@ class ExpenseController extends Controller
 
     public function show($id)
     {
-        $expense = Expense::find($id);
+        $expense = Expense::with('user')->find($id);
         return response()->json([
             'type' => 'success',
             'data' => $expense
@@ -69,12 +101,33 @@ class ExpenseController extends Controller
 
     public function update($id, Request $request)
     {
+        $request->validate([
+            'reference' => 'required',
+            'user_id' => 'required'
+        ]);
+
         $expense = Expense::find($id);
         $expense->reference = $request->reference;
-        $expense->amount = $request->amount;
-        $expense->note = $request->note;
-        $expense->incharge = $request->incharge;
-        $expense->evidence = $request->evidence;
+        $expense->amount = str_replace(',', '', $request->amount);
+        $expense->notes = $request->notes;
+        $expense->user_id = $request->user_id;
+        
+        if ($request->has('file')) {
+
+            if (Storage::disk('public')->exists($request->evidence)) {
+                Storage::disk('public')->delete($request->evidence);
+            }
+
+            if (preg_match('/^data:image\/(\w+);base64,/', $request->file)) {
+                
+                $img = substr($request->file, strpos($request->file, ',') + 1);
+                $img = base64_decode($img);
+                Storage::disk('public')->put($request->evidence, $img);
+            }
+
+            $expense->evidence = $request->evidence;
+        }
+
         $expense->save();
 
         return response()->json([
@@ -86,6 +139,13 @@ class ExpenseController extends Controller
     public function destroy($id)
     {
         $expense = Expense::find($id);
+
+        if (!empty($expense->evidence)) {
+            if (Storage::disk('public')->exists($expense->evidence)) {
+                Storage::disk('public')->delete($expense->evidence);
+            }
+        }
+
         $expense->delete();
 
         return response()->json([
@@ -93,5 +153,17 @@ class ExpenseController extends Controller
             'message' => 'expense deleted successfully'
         ], 201);
 
+    }
+
+    public function user(Request $request)
+    {
+        
+        $users = User::where('name', 'like', '%'.$request->name.'%')
+                ->get();
+        
+        return response()->json([
+            'type' => 'success',
+            'data' => $users
+        ], 200);
     }
 }

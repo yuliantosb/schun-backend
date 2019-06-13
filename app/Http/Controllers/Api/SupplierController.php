@@ -16,7 +16,7 @@ class SupplierController extends Controller
                                 if (!empty($request->keyword)) {
                                     $where->where('name', 'like', '%'.$request->keyword.'%')
                                         ->orWhere('email', 'like', '%'.$request->keyword.'%')
-                                        ->orWhere('phone', 'like', '%'.$request->keyword.'%')
+                                        ->orWhere('phone_number', 'like', '%'.$request->keyword.'%')
                                         ->orWhere('address', 'like', '%'.$request->keyword.'%');
                                 }
                             })
@@ -43,10 +43,15 @@ class SupplierController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required'
+        ]);
+
         $supplier = new Supplier;
         $supplier->name = $request->name;
         $supplier->email = $request->email;
-        $supplier->phone = $request->phone;
+        $supplier->phone_number = $request->phone_number;
         $supplier->address = $request->address;
         $supplier->save();
 
@@ -67,10 +72,15 @@ class SupplierController extends Controller
 
     public function update($id, Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required'
+        ]);
+
         $supplier = Supplier::find($id);
         $supplier->name = $request->name;
         $supplier->email = $request->email;
-        $supplier->phone = $request->phone;
+        $supplier->phone_number = $request->phone_number;
         $supplier->address = $request->address;
         $supplier->save();
 

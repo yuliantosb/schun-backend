@@ -11,11 +11,13 @@ class CategoryController extends Controller
 {
     public function index(Request $request)
     {
-        $category = Category::where(function($where) use ($request){
+        $category = Category::with('parent')->where(function($where) use ($request){
 
                                 if (!empty($request->keyword)) {
                                     $where->where('name', 'like', '%'.$request->keyword.'%')
-                                        ->orWhere('parent', 'like', '%'.$request->keyword.'%')
+                                        ->orWhereHas('parent', function($whereHas) use ($request) {
+                                            $whereHas->where('name', 'like', '%'.$request->keyword.'%');
+                                        })
                                         ->orWhere('description', 'like', '%'.$request->keyword.'%');
                                 }
                             })
@@ -44,7 +46,7 @@ class CategoryController extends Controller
     {
         $category = new Category;
         $category->name = $request->name;
-        $category->parent = $request->parent;
+        $category->parent_id = $request->parent_id;
         $category->description = $request->description;
         $category->save();
 
@@ -67,7 +69,7 @@ class CategoryController extends Controller
     {
         $category = Category::find($id);
         $category->name = $request->name;
-        $category->parent = $request->parent;
+        $category->parent_id = $request->parent_id;
         $category->description = $request->description;
         $category->save();
 
@@ -87,5 +89,18 @@ class CategoryController extends Controller
             'message' => 'category deleted successfully'
         ], 201);
 
+    }
+
+    public function parent(Request $request)
+    {
+        $categories = Category::doesntHave('parent')
+                        ->where('name', 'like', '%'.$request->name.'%')
+                        ->get();
+        
+        return response()->json([
+            'type' => 'success',
+            'data' => $categories
+        ], 200);
+        
     }
 }
