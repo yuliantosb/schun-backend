@@ -18,7 +18,7 @@ class Expense extends Model
 
     public function getEvidenceLinkAttribute()
     {
-        return url('storage/'.$this->evidence);
+        return secure_url('storage/'.$this->evidence);
     }
 
     public function getAmountFormattedAttribute()
