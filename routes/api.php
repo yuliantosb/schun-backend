@@ -100,7 +100,10 @@ Route::middleware(['auth:api'])->group(function(){
     Route::get('grouppacketdetails/{id}', 'Api\GrouppacketdetailsController@show');
     Route::put('grouppacketdetails/{id}', 'Api\GrouppacketdetailsController@update');
     Route::delete('grouppacketdetails/{id}', 'Api\GrouppacketdetailsController@destroy');
+    // settings
+    Route::put('setting', 'Api\SettingController@update');
 });
 
+Route::get('setting', 'Api\SettingController@index');
 // Login
 Route::post('login', 'Api\Auth\LoginController@login');

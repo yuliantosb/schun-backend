@@ -77,13 +77,7 @@ class EmployeeController extends Controller
 
         if ($request->has('file')) {
 
-            if (preg_match('/^data:image\/(\w+);base64,/', $request->file)) {
-                
-                $img = substr($request->file, strpos($request->file, ',') + 1);
-                $img = base64_decode($img);
-                Storage::disk('public')->put($request->photo, $img);
-            }
-
+            $employee->file = $request->file;
             $employee->photo = $request->photo;
         }
         
@@ -137,17 +131,7 @@ class EmployeeController extends Controller
 
         if ($request->has('file')) {
 
-            if (Storage::disk('public')->exists($request->photo)) {
-                Storage::disk('public')->delete($request->photo);
-            }
-
-            if (preg_match('/^data:image\/(\w+);base64,/', $request->file)) {
-                
-                $img = substr($request->file, strpos($request->file, ',') + 1);
-                $img = base64_decode($img);
-                Storage::disk('public')->put($request->photo, $img);
-            }
-
+            $employee->file = $request->file;
             $employee->photo = $request->photo;
         }
         

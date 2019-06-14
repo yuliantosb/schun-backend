@@ -29,7 +29,8 @@ class LoginController extends Controller
             if ($user && $auth) {
                 return response()->json([
                     'type' => 'success',
-                    'token' => $token
+                    'token' => $token,
+                    'user' => $user->load('employee'),
                 ], 200);
             }
         }

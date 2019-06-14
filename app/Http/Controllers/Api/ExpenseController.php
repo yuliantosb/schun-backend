@@ -68,18 +68,11 @@ class ExpenseController extends Controller
 
         if ($request->has('file')) {
 
-            if (Storage::disk('public')->exists($request->evidence)) {
-                Storage::disk('public')->delete($request->evidence);
-            }
+            if ($request->has('file')) {
 
-            if (preg_match('/^data:image\/(\w+);base64,/', $request->file)) {
-                
-                $img = substr($request->file, strpos($request->file, ',') + 1);
-                $img = base64_decode($img);
-                Storage::disk('public')->put($request->evidence, $img);
+                $expense->file = $request->file;
+                $expense->evidence = $request->evidence;
             }
-
-            $expense->evidence = $request->evidence;
         }
 
         $expense->save();
@@ -114,17 +107,7 @@ class ExpenseController extends Controller
         
         if ($request->has('file')) {
 
-            if (Storage::disk('public')->exists($request->evidence)) {
-                Storage::disk('public')->delete($request->evidence);
-            }
-
-            if (preg_match('/^data:image\/(\w+);base64,/', $request->file)) {
-                
-                $img = substr($request->file, strpos($request->file, ',') + 1);
-                $img = base64_decode($img);
-                Storage::disk('public')->put($request->evidence, $img);
-            }
-
+            $expense->file = $request->file;
             $expense->evidence = $request->evidence;
         }
 

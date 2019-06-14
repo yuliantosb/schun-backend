@@ -38,6 +38,8 @@ class User extends Eloquent
         'email_verified_at' => 'datetime',
     ];
 
+    protected $appends = ['photo_url'];
+
     public function role()
     {
         return $this->belongsTo('App\Role');
@@ -69,5 +71,10 @@ class User extends Eloquent
     public function employee()
     {
         return $this->hasOne('App\Employee');
+    }
+
+    public function getPhotoUrlAttribute()
+    {
+        return "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $this->email ) ) ) . "?d=mm&s=200";
     }
 }

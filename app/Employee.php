@@ -20,7 +20,7 @@ class Employee extends Model
 
     public function getPhotoUrlAttribute()
     {
-        return !empty($this->photo) ? Storage::disk('public')->url($this->photo)  : "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $this->user->email ) ) ) . "?d=mm&s=200";
+        return !empty($this->photo) ? $this->file  : "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $this->user->email ) ) ) . "?d=mm&s=200";
     }
 
     public function getAgeAttribute()

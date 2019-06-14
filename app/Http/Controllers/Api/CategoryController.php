@@ -94,6 +94,11 @@ class CategoryController extends Controller
     public function parent(Request $request)
     {
         $categories = Category::doesntHave('parent')
+                        ->where(function($where) use ($request){
+                            if (!empty($request->id)) {
+                                $where->where('_id', '!=', $request->id);
+                            }
+                        })
                         ->where('name', 'like', '%'.$request->name.'%')
                         ->get();
         

@@ -15,7 +15,7 @@ class StoreController extends Controller
 
                                 if (!empty($request->keyword)) {
                                     $where->where('name', 'like', '%'.$request->keyword.'%')
-                                        ->orWhere('phone', 'like', '%'.$request->keyword.'%')
+                                        ->orWhere('phone_number', 'like', '%'.$request->keyword.'%')
                                         ->orWhere('address', 'like', '%'.$request->keyword.'%');
                                 }
                             })
@@ -42,9 +42,13 @@ class StoreController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required'
+        ]);
+
         $store = new Store;
         $store->name = $request->name;
-        $store->phone = $request->phone;
+        $store->phone_number = $request->phone_number;
         $store->address = $request->address;
         $store->save();
 
@@ -65,9 +69,14 @@ class StoreController extends Controller
 
     public function update($id, Request $request)
     {
+
+        $request->validate([
+            'name' => 'required'
+        ]);
+
         $store = Store::find($id);
         $store->name = $request->name;
-        $store->phone = $request->phone;
+        $store->phone_number = $request->phone_number;
         $store->address = $request->address;
         $store->save();
 
