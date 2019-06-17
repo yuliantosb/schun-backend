@@ -298,6 +298,8 @@
       'mongodb' => 
       array (
         'driver' => 'mongodb',
+        'host' => 'localhost',
+        'port' => '27017',
         'database' => 'waskita',
         'username' => '',
         'password' => '',

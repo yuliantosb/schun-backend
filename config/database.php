@@ -92,11 +92,21 @@ return [
             'database' => env('DB_DATABASE'),
             'username' => env('DB_USERNAME'),
             'password' => env('DB_PASSWORD'),
-            'dsn'      => env('DB_DSN', 'mongodb+srv://admin:13-Juli-1995@schun-rjwgr.mongodb.net/waskita?retryWrites=true'),
             'options'  => [
                 'database' => 'admin' // sets the authentication database required by mongo 3
             ]
         ],
+
+        'mongodb_prod' => [
+            'driver'   => 'mongodb',
+            'database' => env('DB_DATABASE'),
+            'username' => env('DB_USERNAME'),
+            'password' => env('DB_PASSWORD'),
+            'options'  => [
+                'database' => 'admin' // sets the authentication database required by mongo 3
+            ],
+            'dsn'      => env('DB_DSN', 'mongodb+srv://admin:13-Juli-1995@schun-rjwgr.mongodb.net/waskita?retryWrites=true'),
+        ]
 
     ],
 
