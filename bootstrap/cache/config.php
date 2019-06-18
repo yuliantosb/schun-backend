@@ -303,11 +303,22 @@
         'database' => 'waskita',
         'username' => '',
         'password' => '',
-        'dsn' => 'mongodb+srv://admin:13-Juli-1995@schun-rjwgr.mongodb.net/waskita?retryWrites=true',
         'options' => 
         array (
           'database' => 'admin',
         ),
+      ),
+      'mongodb_prod' => 
+      array (
+        'driver' => 'mongodb',
+        'database' => 'waskita',
+        'username' => '',
+        'password' => '',
+        'options' => 
+        array (
+          'database' => 'admin',
+        ),
+        'dsn' => 'mongodb+srv://admin:13-Juli-1995@schun-rjwgr.mongodb.net/waskita?retryWrites=true',
       ),
     ),
     'migrations' => 'migrations',

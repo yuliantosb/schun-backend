@@ -11,6 +11,7 @@ class CategoryController extends Controller
 {
     public function index(Request $request)
     {
+        $ordering = json_decode($request->ordering);
         $category = Category::with('parent')->where(function($where) use ($request){
 
                                 if (!empty($request->keyword)) {
@@ -21,7 +22,7 @@ class CategoryController extends Controller
                                         ->orWhere('description', 'like', '%'.$request->keyword.'%');
                                 }
                             })
-                            ->orderBy('name')
+                            ->orderBy($ordering->type, $ordering->sort)
                             ->paginate((int)$request->perpage);
 
         $pages = Pages::generate($category);
@@ -44,9 +45,18 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        if (!empty($request->parent_id)) {
+            $parent = Category::find($request->parent_id);
+        }
+
         $category = new Category;
         $category->name = $request->name;
         $category->parent_id = $request->parent_id;
+        $category->parent_name = !empty($request->parent_id) ? $parent->name : null;
         $category->description = $request->description;
         $category->save();
 
@@ -58,7 +68,7 @@ class CategoryController extends Controller
 
     public function show($id)
     {
-        $category = Category::find($id);
+        $category = Category::with('parent')->find($id);
         return response()->json([
             'type' => 'success',
             'data' => $category
@@ -67,9 +77,19 @@ class CategoryController extends Controller
 
     public function update($id, Request $request)
     {
+
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        if (!empty($request->parent_id)) {
+            $parent = Category::find($request->parent_id);
+        }
+
         $category = Category::find($id);
         $category->name = $request->name;
         $category->parent_id = $request->parent_id;
+        $category->parent_name = !empty($request->parent_id) ? $parent->name : null;
         $category->description = $request->description;
         $category->save();
 
@@ -82,6 +102,8 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         $category = Category::find($id);
+        $category->deleted_by = auth()->user()->id;
+        $category->save();
         $category->delete();
 
         return response()->json([
