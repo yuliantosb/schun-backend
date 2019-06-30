@@ -29,6 +29,6 @@ class ForgotPassword extends Mailable
      */
     public function build()
     {
-        return $this->markdown('email.auth.forgot_password');
+        return $this->markdown('email.forgot_password');
     }
 }
