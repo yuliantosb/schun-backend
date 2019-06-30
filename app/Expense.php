@@ -26,4 +26,17 @@ class Expense extends Model
 
         return $currency.number_format($this->amount,2,$decimal_separator,$thousand_separator);
     }
+
+    public static function boot() {
+
+        parent::boot();
+        
+        static::updating(function($table)  {
+            $table->updated_by = auth()->user()->id;
+        });
+
+        static::saving(function($table)  {
+            $table->created_by = auth()->user()->id;
+        });
+    }
 }

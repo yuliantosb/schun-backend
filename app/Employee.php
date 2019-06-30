@@ -27,4 +27,17 @@ class Employee extends Model
     {
         return Carbon::parse($this->date_of_birth)->diff(Carbon::now())->format('%y y/o');
     }
+
+    public static function boot() {
+
+        parent::boot();
+        
+        static::updating(function($table)  {
+            $table->updated_by = auth()->user()->id;
+        });
+
+        static::saving(function($table)  {
+            $table->created_by = auth()->user()->id;
+        });
+    }
 }

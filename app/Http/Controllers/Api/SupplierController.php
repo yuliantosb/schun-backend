@@ -94,6 +94,8 @@ class SupplierController extends Controller
     public function destroy($id)
     {
         $supplier = Supplier::find($id);
+        $supplier->deleted_by = auth()->user()->id;
+        $supplier->save();
         $supplier->delete();
 
         return response()->json([

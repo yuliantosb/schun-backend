@@ -100,6 +100,12 @@ Route::middleware(['auth:api'])->group(function(){
     Route::get('grouppacketdetails/{id}', 'Api\GrouppacketdetailsController@show');
     Route::put('grouppacketdetails/{id}', 'Api\GrouppacketdetailsController@update');
     Route::delete('grouppacketdetails/{id}', 'Api\GrouppacketdetailsController@destroy');
+    // discount
+    Route::get('discount', 'Api\DiscountController@index');
+    Route::post('discount', 'Api\DiscountController@store');
+    Route::get('discount/{id}', 'Api\DiscountController@show');
+    Route::put('discount/{id}', 'Api\DiscountController@update');
+    Route::delete('discount/{id}', 'Api\DiscountController@destroy');
     // settings
     Route::put('setting', 'Api\SettingController@update');
 });

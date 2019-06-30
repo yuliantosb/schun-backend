@@ -115,6 +115,8 @@ class CustomerController extends Controller
     public function destroy($id)
     {
         $customers = Customer::find($id);
+        $customer->deleted_by = auth()->user()->id;
+        $customer->save();
 
         if($customers) {
             $customers->delete();

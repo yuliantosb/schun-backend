@@ -150,6 +150,8 @@ class EmployeeController extends Controller
     public function destroy($id)
     {
         $user = User::find($id);
+        $user->deleted_by = auth()->user()->id;
+        $user->save();
 
         if (!empty($user->employee->photo)) {
             

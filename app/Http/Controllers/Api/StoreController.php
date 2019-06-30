@@ -90,6 +90,8 @@ class StoreController extends Controller
     public function destroy($id)
     {
         $store = Store::find($id);
+        $store->deleted_by = auth()->user()->id;
+        $store->save();
         $store->delete();
 
         return response()->json([
