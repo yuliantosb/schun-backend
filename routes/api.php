@@ -107,3 +107,5 @@ Route::middleware(['auth:api'])->group(function(){
 Route::get('setting', 'Api\SettingController@index');
 // Login
 Route::post('login', 'Api\Auth\LoginController@login');
+Route::post('forgot-password', 'Api\Auth\LoginController@forgot');
+Route::post('reset', 'Api\Auth\LoginController@reset');

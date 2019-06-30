@@ -11,6 +11,7 @@ class StoreController extends Controller
 {
     public function index(Request $request)
     {
+        $ordering = json_decode($request->ordering);
         $stores = Store::where(function($where) use ($request){
 
                                 if (!empty($request->keyword)) {
@@ -19,7 +20,7 @@ class StoreController extends Controller
                                         ->orWhere('address', 'like', '%'.$request->keyword.'%');
                                 }
                             })
-                            ->orderBy('name')
+                            ->orderBy($ordering->type, $ordering->sort)
                             ->paginate((int)$request->perpage);
 
         $pages = Pages::generate($stores);

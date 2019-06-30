@@ -25,7 +25,7 @@ class EmployeeController extends Controller
                                     $where->where('name', 'like', '%'.$request->keyword.'%')
                                         ->orWhere('email', 'like', '%'.$request->keyword.'%')
                                         ->orWhereHas('employee', function($whereEmployee) use ($request){
-                                            $whereEmployee->where('reg_number', 'like', '%'.$request->keyword.'%')
+                                            $whereEmployee->where('username', 'like', '%'.$request->keyword.'%')
                                                     ->orWhere('phone_number', 'like', '%'.$request->keyword.'%');
                                         });
                                 }
@@ -56,7 +56,7 @@ class EmployeeController extends Controller
 
         $request->validate([
             'name' => 'required',
-            'reg_number' => 'required|unique:employees',
+            'username' => 'required|unique:employees',
             'password' => 'required|confirmed|min:6',
             'email' => 'required|unique:users',
             'role_id' => 'required'
@@ -83,7 +83,7 @@ class EmployeeController extends Controller
         
         $employee->phone_number = $request->phone_number;
         $employee->address = $request->address;
-        $employee->reg_number = $request->reg_number;
+        $employee->username = $request->username;
         $user->employee()->save($employee);
 
         return response()->json([
@@ -106,7 +106,7 @@ class EmployeeController extends Controller
 
         $request->validate([
             'name' => 'required',
-            'reg_number' => 'required|unique:employees,reg_number,'.$id.',user_id',
+            'username' => 'required|unique:employees,username,'.$id.',user_id',
             'password' => 'confirmed|min:6',
             'email' => 'required|unique:users,email,'.$id.',_id',
             'role_id' => 'required'
@@ -137,7 +137,7 @@ class EmployeeController extends Controller
         
         $employee->phone_number = $request->phone_number;
         $employee->address = $request->address;
-        $employee->reg_number = $request->reg_number;
+        $employee->username = $request->username;
         $user->employee()->save($employee);
 
         return response()->json([

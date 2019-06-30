@@ -11,6 +11,7 @@ class SupplierController extends Controller
 {
     public function index(Request $request)
     {
+        $ordering = json_decode($request->ordering);
         $supplier = Supplier::where(function($where) use ($request){
 
                                 if (!empty($request->keyword)) {
@@ -20,7 +21,7 @@ class SupplierController extends Controller
                                         ->orWhere('address', 'like', '%'.$request->keyword.'%');
                                 }
                             })
-                            ->orderBy('name')
+                            ->orderBy($ordering->type, $ordering->sort)
                             ->paginate((int)$request->perpage);
 
         $pages = Pages::generate($supplier);

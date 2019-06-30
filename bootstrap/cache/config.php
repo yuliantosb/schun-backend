@@ -2,6 +2,7 @@
   'app' => 
   array (
     'name' => 'Laravel',
+    'frontendurl' => 'http://localhost:3000',
     'env' => 'local',
     'debug' => true,
     'url' => 'http://localhost:8000',
@@ -467,8 +468,8 @@
       'name' => 'Example',
     ),
     'encryption' => NULL,
-    'username' => NULL,
-    'password' => NULL,
+    'username' => '7063904f960dc8',
+    'password' => 'af269d899919d3',
     'sendmail' => '/usr/sbin/sendmail -bs',
     'markdown' => 
     array (

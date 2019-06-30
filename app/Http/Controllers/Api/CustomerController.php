@@ -12,6 +12,7 @@ class CustomerController extends Controller
     // Function Untuk Menampilkan Data Customer
     public function index(Request $request)
     {
+        $ordering = json_decode($request->ordering);
         $customers = Customer::where(function($where) use ($request){
     
             if (!empty($request->keyword)) {
@@ -23,7 +24,7 @@ class CustomerController extends Controller
             }
         })
 
-        ->orderBy('name')
+        ->orderBy($ordering->type, $ordering->sort)
         ->paginate((int)$request->perpage);
 
         $pages = Pages::generate($customers);
