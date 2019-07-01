@@ -71,6 +71,7 @@ Route::middleware(['auth:api'])->group(function(){
      Route::put('supplier/{id}', 'Api\SupplierController@update');
      Route::delete('supplier/{id}', 'Api\SupplierController@destroy');
     //products
+    Route::get('products/category', 'Api\ProductsController@category');
     Route::get('products', 'Api\ProductsController@index');
     Route::post('products', 'Api\ProductsController@store');
     Route::get('products/{id}', 'Api\ProductsController@show');

@@ -61,6 +61,8 @@ class CustomerController extends Controller
         $customer->place_of_birth = $request->place_of_birth;
         $customer->date_of_birth = $request->date_of_birth;
         $customer->address = $request->address;
+        $customer->type = !empty($request->type) ? $request->type : 'retailer';
+        $customer->info = $request->info;
         $customer->save();
 
         return response()->json([
@@ -103,6 +105,8 @@ class CustomerController extends Controller
         $customer->place_of_birth = $request->place_of_birth;
         $customer->date_of_birth = $request->date_of_birth;
         $customer->address = $request->address;
+        $customer->type = !empty($request->type) ? $request->type : 'retailer';
+        $customer->info = $request->info;
         $customer->save();
 
         return response()->json([
