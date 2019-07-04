@@ -43,6 +43,7 @@
       25 => 'App\\Providers\\RouteServiceProvider',
       26 => 'Barryvdh\\Cors\\ServiceProvider',
       27 => 'Jenssegers\\Mongodb\\MongodbServiceProvider',
+      28 => 'Darryldecode\\Cart\\CartServiceProvider',
     ),
     'aliases' => 
     array (
@@ -81,6 +82,7 @@
       'URL' => 'Illuminate\\Support\\Facades\\URL',
       'Validator' => 'Illuminate\\Support\\Facades\\Validator',
       'View' => 'Illuminate\\Support\\Facades\\View',
+      'Cart' => 'Darryldecode\\Cart\\Facades\\CartFacade',
     ),
   ),
   'auth' => 
@@ -584,6 +586,15 @@
     'secure' => false,
     'http_only' => true,
     'same_site' => NULL,
+  ),
+  'shopping_cart' => 
+  array (
+    'format_numbers' => false,
+    'decimals' => 0,
+    'dec_point' => '.',
+    'thousands_sep' => ',',
+    'storage' => NULL,
+    'events' => NULL,
   ),
   'view' => 
   array (

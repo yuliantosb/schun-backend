@@ -72,6 +72,7 @@ Route::middleware(['auth:api'])->group(function(){
      Route::delete('supplier/{id}', 'Api\SupplierController@destroy');
     //products
     Route::get('products/category', 'Api\ProductsController@category');
+    Route::get('products/search', 'Api\ProductsController@search');
     Route::get('products', 'Api\ProductsController@index');
     Route::post('products', 'Api\ProductsController@store');
     Route::get('products/{id}', 'Api\ProductsController@show');
@@ -79,6 +80,7 @@ Route::middleware(['auth:api'])->group(function(){
     Route::delete('products/{id}', 'Api\ProductsController@destroy');
     //sales
     Route::get('sales', 'Api\SalesController@index');
+    Route::get('sales/customer', 'Api\SalesController@customer');
     Route::post('sales', 'Api\SalesController@store');
     Route::get('sales/{id}', 'Api\SalesController@show');
     Route::put('sales/{id}', 'Api\SalesController@update');

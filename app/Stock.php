@@ -9,6 +9,9 @@ class Stock extends Model
 {
     use SoftDeletes;
     protected $appends = ['amount_formatted'];
+    protected $casts = [
+        'amount' => 'integer',
+    ];
 
     public static function boot() {
 
@@ -21,6 +24,11 @@ class Stock extends Model
         static::saving(function($table)  {
             $table->created_by = auth()->user()->id;
         });
+    }
+
+    public function product()
+    {
+        return $this->belongsTo('App\Products', 'products_id', '_id');
     }
 
     public function details()

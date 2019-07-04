@@ -10,6 +10,7 @@ use App\Helpers\Pages;
 use App\Stock;
 use App\StockDetail;
 use DB;
+use Cart;
 
 class ProductsController extends Controller
 {
@@ -72,8 +73,9 @@ class ProductsController extends Controller
         $product->wholesale = str_replace(',', '', $request->wholesale);
         $product->cost = str_replace(',', '', $request->cost);
         $product->stock = str_replace(',', '', $request->stock);
+        $product->type = $request->type;
 
-        if (!empty($request->picture)) {
+        if (!empty($request->file)) {
             $product->picture = $request->picture;
             $product->file = $request->file;
         }
@@ -84,12 +86,13 @@ class ProductsController extends Controller
         $product->save();
 
         $stock = new Stock;
-        $stock->amount = str_replace(',', '', $request->stock);
+        $stock->amount = (int) str_replace(',', '', $request->stock);
         $product->stock()->save($stock);
 
         $stock_detail = new StockDetail;
-        $stock_detail->amount = str_replace(',', '', $request->stock);
+        $stock_detail->amount = (int) str_replace(',', '', $request->stock);
         $stock_detail->description = 'Init new product';
+        $stock_detail->type = 'induction';
         $stock->details()->save($stock_detail);
 
         return response()->json([
@@ -117,8 +120,9 @@ class ProductsController extends Controller
         $product->price = str_replace(',', '', $request->price);
         $product->wholesale = str_replace(',', '', $request->wholesale);
         $product->cost = str_replace(',', '', $request->cost);
+        $product->type = $request->type;
 
-        if (!empty($request->picture)) {
+        if (!empty($request->file)) {
             $product->picture = $request->picture;
             $product->file = $request->file;
         }
@@ -159,4 +163,31 @@ class ProductsController extends Controller
             'data' => $categories
         ], 200);
     }
+
+    public function search(Request $request)
+    {
+        $accurate = Products::where('code', $request->keyword)
+                                ->first();
+
+        if (!empty($accurate)) {
+
+            return response()->json([
+                'type' => 'success',
+                'accurate' => true,
+                'data' => $accurate
+            ], 200);
+
+        } else {
+
+            $products = Products::where('name', 'like', '%'.$request->keyword.'%')
+                                    ->orWhere('code', 'like', '%'.$request->keyword.'%')
+                                    ->get();
+            
+            return response()->json([
+                'type' => 'success',
+                'data' => $products
+            ], 200);
+        }
+    }
+
 }

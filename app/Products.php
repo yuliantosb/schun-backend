@@ -10,6 +10,7 @@ class Products extends Model
     use SoftDeletes;
 
     protected $appends = ['price_formatted', 'wholesale_formatted', 'cost_formatted'];
+    protected $fillable = ['stock'];
 
     public function Category()
     {
