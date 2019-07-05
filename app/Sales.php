@@ -9,7 +9,7 @@ class Sales extends Model
 {
     use SoftDeletes;
 
-    protected $appends = ['subtotal_formatted', 'tax_formatted', 'discount_formatted', 'total_formatted'];
+    protected $appends = ['subtotal_formatted', 'tax_formatted', 'discount_formatted', 'total_formatted', 'price_formatted'];
 
     public function customer()
     {
@@ -59,6 +59,16 @@ class Sales extends Model
         $thousand_separator = !empty($setting->thousand_separator) ? $setting->thousand_separator : ',';
 
         return $currency.number_format($this->total,2,$decimal_separator,$thousand_separator);
+    }
+
+    public function getPriceFormattedAttribute()
+    {
+        $setting = Setting::getSetting();
+        $currency = !empty($setting->currency) ?  $setting->currency : 'Rp';
+        $decimal_separator = !empty($setting->decimal_separator) ? $setting->decimal_separator : '.';
+        $thousand_separator = !empty($setting->thousand_separator) ? $setting->thousand_separator : ',';
+
+        return $currency.number_format($this->price,2,$decimal_separator,$thousand_separator);
     }
 
     public static function boot() {

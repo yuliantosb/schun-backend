@@ -19,9 +19,10 @@ class SalesController extends Controller
         $sales = Sales::with(['customer'])->where(function($where) use ($request){
 
                                 if (!empty($request->keyword)) {
-                                    $where->where('name', 'like', '%'.$request->keyword.'%')
-                                        ->orWhere('description', 'like', '%'.$request->keyword.'%')
-                                        ->orWhere('price', 'like', '%'.$request->keyword.'%');
+                                    $where->whereHas('customer', function($whereHas) use ($request) {
+                                        $whereHas->where('name', 'like', '%'.$request->keyword.'%');
+                                    })
+                                    ->orWhere('payment_type', 'like', '%'.$request->keyword.'%');
                                 }
                             })
                             ->orderBy($ordering->type, $ordering->sort)
@@ -49,7 +50,13 @@ class SalesController extends Controller
     {
         $customer_name = !empty($request->customer_id) ? Customer::find($request->customer_id)->name : null;
         $subtotal = collect($request->details)->sum('subtotal');
-        $sales = new Sales;
+        
+        if (!empty($request->id)) {
+            $sales = Sales::find($request->id);
+            $sales->details()->delete();
+        } else {
+            $sales = new Sales;
+        }
         $sales->customer_name = $customer_name;
         $sales->subtotal = $subtotal;
         $sales->tax = $request->tax;
@@ -64,14 +71,14 @@ class SalesController extends Controller
         $sales->is_hold = $request->is_hold;
         $sales->save();
 
-
         foreach ($request->details as $detail) {
 
-            $sales_details = new SalesDetail;
+            $sales_details = SalesDetail::firstOrNew(['product_id' => $detail['id']]);
+            $sales_details->product_name = $detail['name'];
             $sales_details->product_id = $detail['id'];
-            $sales_details->price = $detail['price'];
-            $sales_details->qty = $detail['qty'];
-            $sales_details->subtotal = $detail['subtotal'];
+            $sales_details->price = (float) $detail['price'];
+            $sales_details->qty = (int) $detail['qty'];
+            $sales_details->subtotal = (float) $detail['subtotal'];
             $sales->details()->save($sales_details);
 
             if (!$request->is_hold) {
@@ -99,7 +106,7 @@ class SalesController extends Controller
 
     public function show($id)
     {
-        $sales = Sales::find($id);
+        $sales = Sales::with(['customer', 'details'])->find($id);
         return response()->json([
             'type' => 'success',
             'data' => $sales
@@ -142,5 +149,25 @@ class SalesController extends Controller
             'type' => 'success',
             'data' => $customers
         ], 200);
+    }
+
+    public function cart($id) 
+    {
+        $sales = Sales::find($id);
+        $carts = [];
+        foreach ($sales->details as $cart) {
+            $carts[$cart->product_id] = [
+                'id' => $cart->product_id,
+                'name' => $cart->product_name,
+                'price' => $cart->price,
+                'qty' => $cart->qty,
+                'subtotal' => $cart->subtotal
+            ];
+        }
+
+        return response()->json([
+            'type' => 'success',
+            'data' => $carts],
+        200);
     }
 }

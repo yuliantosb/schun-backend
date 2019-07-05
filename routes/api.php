@@ -81,6 +81,7 @@ Route::middleware(['auth:api'])->group(function(){
     //sales
     Route::get('sales', 'Api\SalesController@index');
     Route::get('sales/customer', 'Api\SalesController@customer');
+    Route::get('sales/cart/{id}', 'Api\SalesController@cart');
     Route::post('sales', 'Api\SalesController@store');
     Route::get('sales/{id}', 'Api\SalesController@show');
     Route::put('sales/{id}', 'Api\SalesController@update');
