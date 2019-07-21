@@ -40,6 +40,7 @@ Route::middleware(['auth:api'])->group(function(){
      //Employee
      Route::get('employee', 'Api\EmployeeController@index');
      Route::post('employee', 'Api\EmployeeController@store');
+     Route::get('employee/user', 'Api\EmployeeController@user');
      Route::get('employee/role', 'Api\EmployeeController@role');
      Route::get('employee/{id}', 'Api\EmployeeController@show');
      Route::put('employee/{id}', 'Api\EmployeeController@update');
@@ -66,6 +67,7 @@ Route::middleware(['auth:api'])->group(function(){
      Route::delete('category/{id}', 'Api\CategoryController@destroy');
        //supplier
      Route::get('supplier', 'Api\SupplierController@index');
+     Route::get('supplier/supplier', 'Api\SupplierController@supplier');
      Route::post('supplier', 'Api\SupplierController@store');
      Route::get('supplier/{id}', 'Api\SupplierController@show');
      Route::put('supplier/{id}', 'Api\SupplierController@update');
@@ -112,6 +114,19 @@ Route::middleware(['auth:api'])->group(function(){
     Route::delete('discount/{id}', 'Api\DiscountController@destroy');
     // settings
     Route::put('setting', 'Api\SettingController@update');
+    // dashboard
+    Route::get('dashboard/daily','Api\DashboardController@daily');
+    // Purchase
+    Route::get('purchase', 'Api\PurchaseController@index');
+    Route::post('purchase', 'Api\PurchaseController@store');
+    Route::get('purchase/{id}', 'Api\PurchaseController@show');
+    Route::put('purchase/{id}', 'Api\PurchaseController@update');
+    Route::delete('purchase/{id}', 'Api\PurchaseController@destroy');
+
+    // stock opname
+    Route::get('stock', 'Api\StockOpnameController@index');
+    Route::put('stock/{id}', 'Api\StockOpnameController@update');
+    Route::get('stock/{id}', 'Api\StockOpnameController@show');
 });
 
 Route::get('setting', 'Api\SettingController@index');

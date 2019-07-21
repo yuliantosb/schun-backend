@@ -14,6 +14,7 @@ class ExpenseController extends Controller
 {
     public function index(Request $request)
     {
+        $ordering = json_decode($request->ordering);
         $expense = Expense::with('user')->where(function($where) use ($request){
 
                 if (!empty($request->start_date) && !empty($request->end_date)) {
@@ -31,7 +32,7 @@ class ExpenseController extends Controller
                         ->orWhere('evidence', 'like', '%'.$request->keyword.'%');
                 }
             })
-        ->orderBy('reference')
+        ->orderBy($ordering->type, $ordering->sort)
         ->paginate((int)$request->perpage);
 
         $pages = Pages::generate($expense);
@@ -68,7 +69,7 @@ class ExpenseController extends Controller
 
         if ($request->has('file')) {
 
-            if ($request->has('file')) {
+            if (!empty($request->file)) {
 
                 $expense->file = $request->file;
                 $expense->evidence = $request->evidence;

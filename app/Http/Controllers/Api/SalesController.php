@@ -10,6 +10,7 @@ use App\Customer;
 use App\SalesDetail;
 use App\Stock;
 use App\StockDetail;
+use Carbon\Carbon;
 
 class SalesController extends Controller
 {
@@ -17,6 +18,11 @@ class SalesController extends Controller
     {
         $ordering = json_decode($request->ordering);
         $sales = Sales::with(['customer'])->where(function($where) use ($request){
+                                
+                                if (!empty($request->start_date) && !empty($request->end_date)) {
+                                    $where->where('created_at', '>=', Carbon::parse($request->start_date))
+                                        ->where('created_at', '<=', Carbon::parse($request->end_date)->addDay());
+                                }
 
                                 if (!empty($request->keyword)) {
                                     $where->whereHas('customer', function($whereHas) use ($request) {
@@ -25,6 +31,7 @@ class SalesController extends Controller
                                     ->orWhere('payment_type', 'like', '%'.$request->keyword.'%');
                                 }
                             })
+
                             ->orderBy($ordering->type, $ordering->sort)
                             ->paginate((int)$request->perpage);
 
@@ -64,7 +71,7 @@ class SalesController extends Controller
         $sales->customer_id = $request->customer_id;
         $sales->total = $subtotal + $request->tax - $request->discount;
         $sales->payment_type = $request->payment_type;
-        $sales->amount = (float)str_replace(',','',$request->amount);
+        $sales->amount = $request->payment_type == 'cash' ? (float)str_replace(',','',$request->amount) : $subtotal + $request->tax - $request->discount;
         $sales->card_number = $request->card_number;
         $sales->card_expired = $request->card_expired;
         $sales->changes = $request->changes;
@@ -84,7 +91,7 @@ class SalesController extends Controller
             if (!$request->is_hold) {
 
                 $stock = Stock::where('products_id', $detail['id'])->first();
-                $stock->decrement('amount', 1);
+                $stock->decrement('amount', (int) $detail['qty']);
                 $stock->product()->update(['stock' => $stock->amount]);
     
                 $stock_details = new StockDetail;
@@ -99,7 +106,8 @@ class SalesController extends Controller
 
         return response()->json([
             'type' => 'success',
-            'message' => 'Sales saved successfully!'
+            'message' => 'Sales saved successfully!',
+            'data' => $sales
         ]);
 
     }

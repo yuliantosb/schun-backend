@@ -180,4 +180,16 @@ class EmployeeController extends Controller
             'data' => $roles
         ], 200);
     }
+
+    public function user(Request $request)
+    {
+        
+        $users = User::where('name', 'like', '%'.$request->name.'%')
+                ->get();
+        
+        return response()->json([
+            'type' => 'success',
+            'data' => $users
+        ], 200);
+    }
 }

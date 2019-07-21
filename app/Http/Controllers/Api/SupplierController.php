@@ -104,4 +104,16 @@ class SupplierController extends Controller
         ], 201);
 
     }
+
+    public function supplier(Request $request)
+    {
+        
+        $suppliers = Supplier::where('name', 'like', '%'.$request->name.'%')
+                ->get();
+        
+        return response()->json([
+            'type' => 'success',
+            'data' => $suppliers
+        ], 200);
+    }
 }
