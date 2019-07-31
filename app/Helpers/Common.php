@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 use App\Permission;
 use App\Role;
 
@@ -52,4 +53,14 @@ class Common {
                 ->get();
         }
     }
+
+    public static function createImageFromBase64($binary, $filename)
+    { 
+
+        @list($type, $binary) = explode(';', $binary);
+        @list(, $binary) = explode(',', $binary); 
+        if($binary!=""){ // storing image in storage/app/public Folder 
+            Storage::disk('public')->put($filename,base64_decode($binary)); 
+         } 
+     }
 }

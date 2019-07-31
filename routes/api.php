@@ -75,6 +75,7 @@ Route::middleware(['auth:api'])->group(function(){
     //products
     Route::get('products/category', 'Api\ProductsController@category');
     Route::get('products/search', 'Api\ProductsController@search');
+    Route::post('products/import', 'Api\ProductsController@import');
     Route::get('products', 'Api\ProductsController@index');
     Route::post('products', 'Api\ProductsController@store');
     Route::get('products/{id}', 'Api\ProductsController@show');

@@ -7,10 +7,13 @@ use App\Http\Controllers\Controller;
 use App\Products;
 use App\Category;
 use App\Helpers\Pages;
+use App\Helpers\Common;
 use App\Stock;
 use App\StockDetail;
 use DB;
 use Cart;
+use Illuminate\Support\Facades\Storage;
+use Excel;
 
 class ProductsController extends Controller
 {
@@ -60,8 +63,8 @@ class ProductsController extends Controller
             'name' => 'required',
             'code' => 'unique:products,code',
             'price' => 'required',
-            'wholesale' => 'required',
-            'cost' => 'required',
+            // 'wholesale' => 'required',
+            // 'cost' => 'required',
             'category_id' => 'required'
         ]);
 
@@ -113,6 +116,16 @@ class ProductsController extends Controller
 
     public function update($id, Request $request)
     {
+
+        $request->validate([
+            'name' => 'required',
+            'code' => 'unique:products,code',
+            'price' => 'required',
+            // 'wholesale' => 'required',
+            // 'cost' => 'required',
+            'category_id' => 'required'
+        ]);
+
         $category = Category::find($request->category_id);
         $product = Products::find($id);
         $product->code = $request->code;
@@ -188,6 +201,55 @@ class ProductsController extends Controller
                 'data' => $products
             ], 200);
         }
+    }
+
+    public function import(Request $request)
+    {
+
+        if (!empty($request->import_file)) {
+            Common::createImageFromBase64($request->import_file, $request->import);
+        }
+
+        $datas = Excel::load('storage/'.$request->import, function($reader) {
+            return $reader->all();
+        })->toObject();
+        
+        foreach ($datas as $data) {
+
+            $product = Products::firstOrNew(['code' => $data->code]);
+            $category = Category::firstOrNew(['category_name' => $data->category_name]);
+            $category->name = $data->category_name;
+            $category->save();
+    
+            $product->code = $data->code;
+            $product->name = $data->name;
+            $product->price = $data->price;
+            $product->stock = $data->stock;
+            $product->category_id = $category->_id;
+            $product->category = $category->name;
+            $product->save();
+    
+            $stock = new Stock;
+            $stock->amount = (int) str_replace(',', '', $data->stock);
+            $product->stock()->save($stock);
+    
+            $stock_detail = new StockDetail;
+            $stock_detail->amount = (int) str_replace(',', '', $data->stock);
+            $stock_detail->description = 'Init new product';
+            $stock_detail->type = 'induction';
+            $stock->details()->save($stock_detail);
+
+        }
+
+        if (Storage::disk('public')->exists($request->import)) {
+            Storage::disk('public')->delete($request->import);
+        }
+            
+        return response()->json([
+            'type' => 'success',
+            'message' => 'Import success'
+        ], 200);
+
     }
 
 }

@@ -9,6 +9,8 @@ class Category extends Model
 {
     use SoftDeletes;
 
+    protected $fillable = ['category_name'];
+
     public static function boot() {
 
         parent::boot();
