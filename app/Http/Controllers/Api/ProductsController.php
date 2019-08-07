@@ -229,11 +229,11 @@ class ProductsController extends Controller
             $product->category = $category->name;
             $product->save();
     
-            $stock = new Stock;
+            $stock = Stock::firstOrNew(['product_id' => $product->_id]);
             $stock->amount = (int) str_replace(',', '', $data->stock);
             $product->stock()->save($stock);
     
-            $stock_detail = new StockDetail;
+            $stock_detail = StockDetail::firstOrNew(['stock_id' => $stock->_id]);
             $stock_detail->amount = (int) str_replace(',', '', $data->stock);
             $stock_detail->description = 'Init new product';
             $stock_detail->type = 'induction';

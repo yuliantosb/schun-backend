@@ -45,6 +45,7 @@
       27 => 'Jenssegers\\Mongodb\\MongodbServiceProvider',
       28 => 'Darryldecode\\Cart\\CartServiceProvider',
       29 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
+      30 => 'Barryvdh\\DomPDF\\ServiceProvider',
     ),
     'aliases' => 
     array (
@@ -85,6 +86,7 @@
       'View' => 'Illuminate\\Support\\Facades\\View',
       'Cart' => 'Darryldecode\\Cart\\Facades\\CartFacade',
       'Excel' => 'Maatwebsite\\Excel\\Facades\\Excel',
+      'PDF' => 'Barryvdh\\DomPDF\\Facade',
     ),
   ),
   'auth' => 
@@ -864,6 +866,29 @@
       0 => '/home/yulianto/http/shard-backend/resources/views',
     ),
     'compiled' => '/home/yulianto/http/shard-backend/storage/framework/views',
+  ),
+  'dompdf' => 
+  array (
+    'show_warnings' => false,
+    'orientation' => 'portrait',
+    'defines' => 
+    array (
+      'font_dir' => '/home/yulianto/http/shard-backend/storage/fonts/',
+      'font_cache' => '/home/yulianto/http/shard-backend/storage/fonts/',
+      'temp_dir' => '/tmp',
+      'chroot' => '/home/yulianto/http/shard-backend',
+      'enable_font_subsetting' => false,
+      'pdf_backend' => 'CPDF',
+      'default_media_type' => 'screen',
+      'default_paper_size' => 'a4',
+      'default_font' => 'serif',
+      'dpi' => 96,
+      'enable_php' => false,
+      'enable_javascript' => true,
+      'enable_remote' => true,
+      'font_height_ratio' => 1.1,
+      'enable_html5_parser' => false,
+    ),
   ),
   'debug-server' => 
   array (

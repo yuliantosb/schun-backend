@@ -83,4 +83,40 @@ class StockOpnameController extends Controller
             'data' => $stock
         ], 200);
     }
+
+    public function get(Request $request)
+    {
+        $stockitems = StockDetail::with(['stock', 'stock.product'])
+                            ->where(function($where) use ($request){
+                                if (!empty($request->start_date) && !empty($request->end_date)) {
+                                    $where->where('created_at', '>=', Carbon::parse($request->start_date))
+                                           ->where('created_at', '<=', Carbon::parse($request->end_date)->addDay());
+                                }
+                            })
+                            ->whereHas('stock.product', function($whereHas) use ($request){
+                                if (!empty($request->keyword)){
+                                    $whereHas->where('name', 'like', '%'.$request->keyword.'%');
+                                }
+
+                            })
+                            ->orderBy('created_at')
+                            ->paginate((int)$request->perpage);
+
+        $pages = Pages::generate($stockitems);
+
+        return response()->json([
+            'type' => 'success',
+            'message' => 'fetch data stock in success!',
+            'data' => [
+                'total' => $stockitems->total(),
+                'per_page' => $stockitems->perPage(),
+                'current_page' => $stockitems->currentPage(),
+                'last_page' => $stockitems->lastPage(),
+                'from' => $stockitems->firstItem(),
+                'to' => $stockitems->lastItem(),
+                'pages' => $pages,
+                'data' => $stockitems->all()
+            ]
+        ]);
+    }
 }
