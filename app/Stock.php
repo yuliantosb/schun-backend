@@ -8,6 +8,7 @@ use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 class Stock extends Model
 {
     use SoftDeletes;
+    protected $fillable = ['product_id'];
     protected $appends = ['amount_formatted'];
     protected $casts = [
         'amount' => 'integer',
@@ -33,7 +34,7 @@ class Stock extends Model
 
     public function details()
     {
-        return $this->embedsMany('App\StockDetail', 'details');
+        return $this->hasMany('App\StockDetail');
     }
 
     public function getAmountFormattedAttribute()

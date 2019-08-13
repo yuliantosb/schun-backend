@@ -75,6 +75,7 @@ Route::middleware(['auth:api'])->group(function(){
     //products
     Route::get('products/category', 'Api\ProductsController@category');
     Route::get('products/search', 'Api\ProductsController@search');
+    Route::post('products/import', 'Api\ProductsController@import');
     Route::get('products', 'Api\ProductsController@index');
     Route::post('products', 'Api\ProductsController@store');
     Route::get('products/{id}', 'Api\ProductsController@show');
@@ -127,6 +128,15 @@ Route::middleware(['auth:api'])->group(function(){
     Route::get('stock', 'Api\StockOpnameController@index');
     Route::put('stock/{id}', 'Api\StockOpnameController@update');
     Route::get('stock/{id}', 'Api\StockOpnameController@show');
+
+    // report stock
+    Route::get('stock-item', 'Api\StockOpnameController@get');
+
+    // report
+    Route::post('report/sales', 'Api\ReportController@sales');
+    Route::post('report/purchase', 'Api\ReportController@purchase');
+    Route::post('report/expense', 'Api\ReportController@expense');
+    Route::post('report/stock', 'Api\ReportController@stock');
 });
 
 Route::get('setting', 'Api\SettingController@index');

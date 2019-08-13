@@ -51,8 +51,9 @@ class Products extends Model
         $currency = !empty($setting->currency) ?  $setting->currency : 'Rp';
         $decimal_separator = !empty($setting->decimal_separator) ? $setting->decimal_separator : '.';
         $thousand_separator = !empty($setting->thousand_separator) ? $setting->thousand_separator : ',';
+        $wholesale = !empty($this->wholesale) ? $this->wholesale : 0;
 
-        return $currency.number_format($this->wholesale,2,$decimal_separator,$thousand_separator);
+        return $currency.number_format($wholesale,2,$decimal_separator,$thousand_separator);
     }
 
     public function getCostFormattedAttribute()
@@ -61,7 +62,8 @@ class Products extends Model
         $currency = !empty($setting->currency) ?  $setting->currency : 'Rp';
         $decimal_separator = !empty($setting->decimal_separator) ? $setting->decimal_separator : '.';
         $thousand_separator = !empty($setting->thousand_separator) ? $setting->thousand_separator : ',';
+        $cost = !empty($this->cost) ? $this->cost : 0;
 
-        return $currency.number_format($this->cost,2,$decimal_separator,$thousand_separator);
+        return $currency.number_format($cost,2,$decimal_separator,$thousand_separator);
     }
 }
