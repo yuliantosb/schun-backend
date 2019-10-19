@@ -20,7 +20,8 @@ class ProductsController extends Controller
     public function index(Request $request)
     {
         $ordering = json_decode($request->ordering);
-        $products = Products::with(['category', 'stock'])
+        $products = Products::withTrashed()
+                            ->with(['category', 'stock'])
                             ->where(function($where) use ($request){
 
                                 if (!empty($request->keyword)) {
@@ -151,12 +152,25 @@ class ProductsController extends Controller
         ], 201);
     }
 
+    public function inActive($id)
+    {
+        $products = Products::withTrashed()->find($id);
+        if ($products->trashed()) {
+            $products->restore();
+        } else {
+            $products->delete();
+        }
+
+        return response()->json([
+            'type' => 'success',
+            'message' => 'Data updated successfully'
+        ], 201);
+    }
+
     public function destroy($id)
     {
-        $products = Products::find($id);
-        $products->deleted_by = auth()->user()->id;
-        $products->save();
-        $products->delete();
+        $products = Products::withTrashed()->find($id);
+        $products->forceDelete();
 
         return response()->json([
             'type' => 'success',
@@ -194,6 +208,7 @@ class ProductsController extends Controller
 
             $products = Products::where('name', 'like', '%'.$request->keyword.'%')
                                     ->orWhere('code', 'like', '%'.$request->keyword.'%')
+                                    ->take(5)
                                     ->get();
             
             return response()->json([

@@ -5,13 +5,13 @@
     'frontendurl' => 'http://localhost:3000',
     'env' => 'local',
     'debug' => true,
-    'url' => 'http://localhost:8000',
+    'url' => 'http://localhost',
     'asset_url' => NULL,
     'timezone' => 'Asia/Jakarta',
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
-    'key' => 'base64:HMqAz1w6r17662l66uthowGjFXw7Trdqu4lpzDY9DEk=',
+    'key' => '',
     'cipher' => 'AES-256-CBC',
     'providers' => 
     array (
@@ -182,7 +182,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => '/home/yulianto/http/shard-backend/storage/framework/cache/data',
+        'path' => '/Users/yulianto/php/schun-backend/storage/framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -247,7 +247,7 @@
   ),
   'database' => 
   array (
-    'default' => 'mongodb',
+    'default' => 'mongodb_prod',
     'connections' => 
     array (
       'sqlite' => 
@@ -260,11 +260,11 @@
       'mysql' => 
       array (
         'driver' => 'mysql',
-        'host' => 'localhost',
-        'port' => '27017',
+        'host' => '127.0.0.1',
+        'port' => '3306',
         'database' => 'waskita',
-        'username' => '',
-        'password' => '',
+        'username' => 'admin',
+        'password' => '13-Juli-1995',
         'unix_socket' => '',
         'charset' => 'utf8mb4',
         'collation' => 'utf8mb4_unicode_ci',
@@ -279,11 +279,11 @@
       'pgsql' => 
       array (
         'driver' => 'pgsql',
-        'host' => 'localhost',
-        'port' => '27017',
+        'host' => '127.0.0.1',
+        'port' => '5432',
         'database' => 'waskita',
-        'username' => '',
-        'password' => '',
+        'username' => 'admin',
+        'password' => '13-Juli-1995',
         'charset' => 'utf8',
         'prefix' => '',
         'prefix_indexes' => true,
@@ -294,10 +294,10 @@
       array (
         'driver' => 'sqlsrv',
         'host' => 'localhost',
-        'port' => '27017',
+        'port' => '1433',
         'database' => 'waskita',
-        'username' => '',
-        'password' => '',
+        'username' => 'admin',
+        'password' => '13-Juli-1995',
         'charset' => 'utf8',
         'prefix' => '',
         'prefix_indexes' => true,
@@ -306,10 +306,10 @@
       array (
         'driver' => 'mongodb',
         'host' => 'localhost',
-        'port' => '27017',
+        'port' => 27017,
         'database' => 'waskita',
-        'username' => '',
-        'password' => '',
+        'username' => 'admin',
+        'password' => '13-Juli-1995',
         'options' => 
         array (
           'database' => 'admin',
@@ -319,8 +319,8 @@
       array (
         'driver' => 'mongodb',
         'database' => 'waskita',
-        'username' => '',
-        'password' => '',
+        'username' => 'admin',
+        'password' => '13-Juli-1995',
         'options' => 
         array (
           'database' => 'admin',
@@ -352,6 +352,29 @@
       ),
     ),
   ),
+  'dompdf' => 
+  array (
+    'show_warnings' => false,
+    'orientation' => 'portrait',
+    'defines' => 
+    array (
+      'font_dir' => '/Users/yulianto/php/schun-backend/storage/fonts/',
+      'font_cache' => '/Users/yulianto/php/schun-backend/storage/fonts/',
+      'temp_dir' => '/var/folders/py/pb8r_bh52vgfr656tzjcfzgr0000gn/T',
+      'chroot' => '/Users/yulianto/php/schun-backend',
+      'enable_font_subsetting' => false,
+      'pdf_backend' => 'CPDF',
+      'default_media_type' => 'screen',
+      'default_paper_size' => 'a4',
+      'default_font' => 'serif',
+      'dpi' => 96,
+      'enable_php' => false,
+      'enable_javascript' => true,
+      'enable_remote' => true,
+      'font_height_ratio' => 1.1,
+      'enable_html5_parser' => false,
+    ),
+  ),
   'excel' => 
   array (
     'cache' => 
@@ -368,7 +391,7 @@
         'host' => 'localhost',
         'port' => 11211,
       ),
-      'dir' => '/home/yulianto/http/shard-backend/storage/cache',
+      'dir' => '/Users/yulianto/php/schun-backend/storage/cache',
     ),
     'properties' => 
     array (
@@ -434,7 +457,7 @@
       ),
       'store' => 
       array (
-        'path' => '/home/yulianto/http/shard-backend/storage/exports',
+        'path' => '/Users/yulianto/php/schun-backend/storage/exports',
         'returnInfo' => false,
       ),
       'pdf' => 
@@ -444,15 +467,15 @@
         array (
           'DomPDF' => 
           array (
-            'path' => '/home/yulianto/http/shard-backend/vendor/dompdf/dompdf/',
+            'path' => '/Users/yulianto/php/schun-backend/vendor/dompdf/dompdf/',
           ),
           'tcPDF' => 
           array (
-            'path' => '/home/yulianto/http/shard-backend/vendor/tecnick.com/tcpdf/',
+            'path' => '/Users/yulianto/php/schun-backend/vendor/tecnick.com/tcpdf/',
           ),
           'mPDF' => 
           array (
-            'path' => '/home/yulianto/http/shard-backend/vendor/mpdf/mpdf/',
+            'path' => '/Users/yulianto/php/schun-backend/vendor/mpdf/mpdf/',
           ),
         ),
       ),
@@ -620,13 +643,13 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => '/home/yulianto/http/shard-backend/storage/app',
+        'root' => '/Users/yulianto/php/schun-backend/storage/app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => '/home/yulianto/http/shard-backend/storage/app/public',
-        'url' => 'http://localhost:8000/storage',
+        'root' => '/Users/yulianto/php/schun-backend/storage/app/public',
+        'url' => 'http://localhost/storage',
         'visibility' => 'public',
       ),
       's3' => 
@@ -671,13 +694,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => '/home/yulianto/http/shard-backend/storage/logs/laravel.log',
+        'path' => '/Users/yulianto/php/schun-backend/storage/logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => '/home/yulianto/http/shard-backend/storage/logs/laravel.log',
+        'path' => '/Users/yulianto/php/schun-backend/storage/logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -733,15 +756,15 @@
       'name' => 'Example',
     ),
     'encryption' => NULL,
-    'username' => '7063904f960dc8',
-    'password' => 'af269d899919d3',
+    'username' => NULL,
+    'password' => NULL,
     'sendmail' => '/usr/sbin/sendmail -bs',
     'markdown' => 
     array (
       'theme' => 'default',
       'paths' => 
       array (
-        0 => '/home/yulianto/http/shard-backend/resources/views/vendor/mail',
+        0 => '/Users/yulianto/php/schun-backend/resources/views/vendor/mail',
       ),
     ),
     'log_channel' => NULL,
@@ -790,7 +813,7 @@
     ),
     'failed' => 
     array (
-      'database' => 'mongodb',
+      'database' => 'mongodb_prod',
       'table' => 'failed_jobs',
     ),
   ),
@@ -834,7 +857,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => '/home/yulianto/http/shard-backend/storage/framework/sessions',
+    'files' => '/Users/yulianto/php/schun-backend/storage/framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -863,32 +886,9 @@
   array (
     'paths' => 
     array (
-      0 => '/home/yulianto/http/shard-backend/resources/views',
+      0 => '/Users/yulianto/php/schun-backend/resources/views',
     ),
-    'compiled' => '/home/yulianto/http/shard-backend/storage/framework/views',
-  ),
-  'dompdf' => 
-  array (
-    'show_warnings' => false,
-    'orientation' => 'portrait',
-    'defines' => 
-    array (
-      'font_dir' => '/home/yulianto/http/shard-backend/storage/fonts/',
-      'font_cache' => '/home/yulianto/http/shard-backend/storage/fonts/',
-      'temp_dir' => '/tmp',
-      'chroot' => '/home/yulianto/http/shard-backend',
-      'enable_font_subsetting' => false,
-      'pdf_backend' => 'CPDF',
-      'default_media_type' => 'screen',
-      'default_paper_size' => 'a4',
-      'default_font' => 'serif',
-      'dpi' => 96,
-      'enable_php' => false,
-      'enable_javascript' => true,
-      'enable_remote' => true,
-      'font_height_ratio' => 1.1,
-      'enable_html5_parser' => false,
-    ),
+    'compiled' => '/Users/yulianto/php/schun-backend/storage/framework/views',
   ),
   'debug-server' => 
   array (
@@ -906,6 +906,7 @@
     ),
     'dont_alias' => 
     array (
+      0 => 'App\\Nova',
     ),
   ),
 );
